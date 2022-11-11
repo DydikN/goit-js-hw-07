@@ -30,9 +30,21 @@ const onClick = (e) => {
   if (!e.target.classList.contains("gallery__image")) {
     return;
   }
-  const instance = basicLightbox.create(`
-	<img src="${e.target.dataset.source}">
-`);
+  const instance = basicLightbox.create(
+    `
+  	<img src="${e.target.dataset.source}">
+  `,
+    {
+      onShow: () => window.addEventListener("keydown", onEsc),
+      onClose: () => window.removeEventListener("keydown", onEsc),
+    }
+  );
+
+  function onEsc(e) {
+    if (e.key === "Escape") {
+      instance.close();
+    }
+  }
   instance.show();
 };
 
